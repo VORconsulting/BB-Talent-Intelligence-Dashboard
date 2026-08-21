@@ -789,12 +789,24 @@
 <h1>BB Talent Intelligence Dashboard | Individual view</h1>
 <p class="subtitle">One banker view of skills, sector proficiency and success persona fit, with clear next actions.</p>
 </header>
+
 <section aria-label="Selected banker context" class="context-strip">
-<div class="context-summary">
-      Selected banker: Moriti Motimele  |  Relationship Executive  |  Primary sector: Agriculture  |  Assessment status: Completed
-    </div>
-<button class="report-btn" onclick="window.print()" type="button">PRINT INDIVIDUAL REPORT</button>
-</section>
+  <div class="context-summary">
+    Selected banker: Moriti Motimele | Relationship Executive | Primary sector: Agriculture | Assessment status: Completed
+  </div>
+
+  <div class="context-actions">
+    <nav class="dashboard-nav" aria-label="Dashboard navigation">
+      <a href="index.html">Home</a>
+      <a href="individual.html" class="active">Individual</a>
+      <a href="team.html">Team</a>
+      <a href="organisation.html">Organisation</a>
+    </nav>
+
+    <button class="report-btn" onclick="window.print()" type="button">PRINT INDIVIDUAL REPORT</button>
+  </div>
+</section>  
+
 <main class="dashboard-grid two-column-dashboard"><section aria-label="Banker summary and interpretation" class="summary-column"><div class="summary-metrics-row"><article class="card metric-card">
 <div class="metric-label">Banker skills</div>
 <div class="metric-value">82</div>
