@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BB Talent Intelligence Dashboard | Team view</title>
+
+<style>
+  :root {
+    --hope: #95052a;
+    --passion: #dc0037;
+    --power: #b50232;
+    --enrich: #131010;
+    --grey-72: #4c4949;
+    --grey-60: #686666;
+    --grey-40: #a19f9f;
+    --grey-24: #c7c5c5;
+    --grey-08: #ece9e9;
+    --grey-04: #f8f6f6;
+    --serene: #ffffff;
+
+    --ready: #1ca643;
+    --watch: #e35716;
+    --gap: #c5163c;
+
+    --track: #ece9e9;
+    --border: #e2dfdf;
+    --radius: 8px;
+    --shadow-1: 0 2px 8px rgba(19, 16, 16, 0.08);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    background: var(--serene);
+    color: var(--enrich);
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  body { min-width: 1180px; }
+  button { font: inherit; }
+
+  .page {
+    width: 100%;
+    min-height: 900px;
+    padding: 48px 48px 28px;
+  }
+
+  .page-header { margin-bottom: 24px; }
+
+  h1 {
+    margin: 24px 0 8px;
+    color: var(--enrich);
+    font-size: 32px;
+    line-height: 1.08;
+    letter-spacing: -0.6px;
+    font-weight: 700;
+  }
+
+  .subtitle {
+    margin: 0;
+    color: var(--grey-60);
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .context-strip {
+    min-height: 48px;
+    margin-bottom: 24px;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    background: var(--grey-04);
+    border-left: 4px solid var(--hope);
+    color: var(--hope);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .report-btn {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding: 8px 20px;
+    border: 0;
+    border-radius: 18px;
+    background: var(--hope);
+    color: var(--serene);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .report-btn:hover { background: var(--power); }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .card {
+    background: var(--serene);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .metric-card {
+    min-height: 120px;
+    padding: 16px;
+    box-shadow: var(--shadow-1);
+  }
+
+  .metric-label {
+    margin-bottom: 8px;
+    color: var(--grey-60);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .metric-value {
+    margin-bottom: 12px;
+    color: var(--hope);
+    font-size: 32px;
+    line-height: 1;
+    font-weight: 700;
+  }
+
+  .metric-detail {
+    color: var(--grey-60);
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 58%) minmax(0, 42%);
+    gap: 24px;
+    align-items: start;
+  }
+
+  .left-column,
+  .right-column { min-width: 0; }
+
+  .right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-self: stretch;
+  }
+
+  .card-title {
+    margin: 0 0 16px;
+    color: var(--enrich);
+    font-size: 16px;
+    line-height: 1.25;
+    font-weight: 700;
+  }
+
+  .heatmap-card,
+  .composition-card,
+  .persona-card,
+  .manager-card {
+    padding: 16px;
+  }
+
+  .heatmap-wrap {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 8px 8px;
+    table-layout: fixed;
+    font-size: 11px;
+  }
+
+  th {
+    color: var(--grey-60);
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+  }
+
+  th:first-child {
+    width: 138px;
+    text-align: left;
+  }
+
+  td.name {
+    width: 138px;
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  td.score {
+    height: 26px;
+    min-width: 50px;
+    padding: 5px 0;
+    color: var(--serene);
+    text-align: center;
+    font-size: 10px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ready-bg { background: var(--ready); }
+  .watch-bg { background: var(--watch); }
+  .gap-bg { background: var(--gap); }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-top: 16px;
+    color: var(--grey-60);
+    font-size: 9px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .swatch {
+    width: 12px;
+    height: 12px;
+    margin-top: 1px;
+    flex: 0 0 auto;
+  }
+
+  .legend strong {
+    display: block;
+    font-size: 9px;
+    font-weight: 400;
+  }
+
+  .stack {
+    display: flex;
+    width: 100%;
+    height: 36px;
+    overflow: hidden;
+    background: var(--track);
+  }
+
+  .stack-no { width: 41.67%; background: var(--gap); }
+  .stack-single { width: 33.33%; background: var(--watch); }
+  .stack-multi { width: 25%; background: var(--ready); }
+
+  .composition-legend {
+    display: grid;
+    gap: 10px;
+    margin-top: 16px;
+    color: var(--grey-60);
+    font-size: 11px;
+  }
+
+  .composition-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .composition-item strong {
+    color: var(--enrich);
+    font-weight: 700;
+  }
+
+  .persona-list {
+    display: grid;
+    gap: 14px;
+  }
+
+  .persona-row {
+    display: grid;
+    grid-template-columns: 150px minmax(0, 1fr) 46px;
+    gap: 10px;
+    align-items: center;
+    font-size: 12px;
+  }
+
+  .bar {
+    height: 12px;
+    overflow: hidden;
+    background: var(--track);
+  }
+
+  .fill { height: 100%; }
+  .fill.ready { background: var(--ready); }
+  .fill.watch { background: var(--watch); }
+  .fill.gap { background: var(--gap); }
+
+  .persona-score {
+    text-align: right;
+    color: var(--grey-72);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .manager-list {
+    margin: 0;
+    padding-left: 20px;
+    display: grid;
+    gap: 8px;
+    color: var(--grey-72);
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .brand-footer {
+    margin-top: auto;
+    padding-top: 24px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .brand-lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--passion);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .brand-lockup img {
+    display: block;
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .team-brand-footer {
+    margin-top: 24px;
+    padding-top: 0;
+    width: 58%;
+    justify-content: flex-start;
+  }
+
+  @media (max-width: 1180px) {
+    body { min-width: 0; }
+    .dashboard-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 820px) {
+    .page { padding: 32px 24px; }
+    .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 560px) {
+    .metrics-grid { grid-template-columns: 1fr; }
+    .context-strip {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+    .persona-row {
+      grid-template-columns: 120px minmax(0, 1fr) 42px;
+    }
+  }
+
+  @page {
+    size: A4 landscape;
+    margin: 12mm;
+  }
+
+  @media print {
+    html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      min-width: 0 !important;
+      width: auto !important;
+      background: #fff !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    .page {
+      width: auto !important;
+      min-height: 0 !important;
+      padding: 0 !important;
+    }
+
+    .report-btn,
+    button { display: none !important; }
+
+    .metric-card,
+    .card { box-shadow: none !important; }
+
+    .metrics-grid,
+    .dashboard-grid,
+    .heatmap-card,
+    .composition-card,
+    .persona-card,
+    .manager-card,
+    .brand-footer {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .dashboard-grid {
+      grid-template-columns: 58% 42% !important;
+      gap: 8mm !important;
+    }
+
+    table {
+      font-size: 8pt !important;
+      border-spacing: 2mm 2mm !important;
+    }
+
+    h1 { font-size: 22pt !important; }
+    .subtitle { font-size: 11pt !important; }
+    .card-title { font-size: 11pt !important; }
+
+    .brand-lockup img {
+      height: 14mm !important;
+    }
+  }
+</style>
+</head>
+
+<body>
+<div class="page">
+
+  <header class="page-header">
+    <h1>BB Talent Intelligence Dashboard | Team view</h1>
+    <p class="subtitle">Manager view to calibrate team capability, portfolio coverage and development cohorts.</p>
+  </header>
+
+  <section class="context-strip" aria-label="Team filters">
+    <div>
+      Filters: Gauteng South&nbsp; | &nbsp;CPHV Business Banking&nbsp; | &nbsp;12 bankers&nbsp; | &nbsp;FY26 assessment cycle
+    </div>
+    <button class="report-btn" type="button" onclick="window.print()">PRINT TEAM REPORT</button>
+  </section>
+
+  <section class="metrics-grid" aria-label="Team headline metrics">
+    <article class="card metric-card">
+      <div class="metric-label">Avg banker skills</div>
+      <div class="metric-value">76</div>
+      <div class="metric-detail">5 above target | 4 watch | 3 priority</div>
+    </article>
+
+    <article class="card metric-card">
+      <div class="metric-label">Sector proficiency</div>
+      <div class="metric-value">58%</div>
+      <div class="metric-detail">Single or multi-sector proficient</div>
+    </article>
+
+    <article class="card metric-card">
+      <div class="metric-label">Persona fit</div>
+      <div class="metric-value">10/12</div>
+      <div class="metric-detail">Bankers aligned to primary role need</div>
+    </article>
+
+    <article class="card metric-card">
+      <div class="metric-label">Readiness</div>
+      <div class="metric-value">42%</div>
+      <div class="metric-detail">Ready now for target role</div>
+    </article>
+  </section>
+
+  <main class="dashboard-grid">
+
+    <section class="left-column">
+      <article class="card heatmap-card">
+        <h2 class="card-title">Team banker skills heatmap | aggregated capability domains</h2>
+
+        <div class="heatmap-wrap">
+          <table aria-label="Team banker skills heatmap">
+            <thead>
+              <tr>
+                <th></th>
+                <th>Acquire</th>
+                <th>Grow</th>
+                <th>Credit</th>
+                <th>Sector</th>
+                <th>Product</th>
+                <th>Execute</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="name">M Motimele</td><td class="score ready-bg">86</td><td class="score ready-bg">91</td><td class="score gap-bg">69</td><td class="score ready-bg">84</td><td class="score watch-bg">73</td><td class="score watch-bg">79</td></tr>
+              <tr><td class="name">S Dlamini</td><td class="score watch-bg">73</td><td class="score ready-bg">82</td><td class="score watch-bg">77</td><td class="score gap-bg">68</td><td class="score gap-bg">65</td><td class="score ready-bg">86</td></tr>
+              <tr><td class="name">N Jacobs</td><td class="score gap-bg">61</td><td class="score watch-bg">74</td><td class="score watch-bg">72</td><td class="score watch-bg">70</td><td class="score gap-bg">66</td><td class="score watch-bg">75</td></tr>
+              <tr><td class="name">A Patel</td><td class="score watch-bg">78</td><td class="score watch-bg">70</td><td class="score ready-bg">83</td><td class="score gap-bg">63</td><td class="score ready-bg">91</td><td class="score watch-bg">72</td></tr>
+              <tr><td class="name">L Khumalo</td><td class="score gap-bg">67</td><td class="score gap-bg">69</td><td class="score gap-bg">58</td><td class="score ready-bg">80</td><td class="score gap-bg">62</td><td class="score watch-bg">76</td></tr>
+              <tr><td class="name">K Naidoo</td><td class="score ready-bg">82</td><td class="score watch-bg">78</td><td class="score watch-bg">74</td><td class="score gap-bg">66</td><td class="score watch-bg">71</td><td class="score ready-bg">85</td></tr>
+              <tr><td class="name">P Maseko</td><td class="score gap-bg">59</td><td class="score gap-bg">63</td><td class="score gap-bg">61</td><td class="score gap-bg">55</td><td class="score gap-bg">69</td><td class="score watch-bg">70</td></tr>
+              <tr><td class="name">R Pillay</td><td class="score ready-bg">88</td><td class="score watch-bg">79</td><td class="score gap-bg">68</td><td class="score watch-bg">76</td><td class="score watch-bg">74</td><td class="score ready-bg">82</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="legend" aria-label="Performance legend">
+          <div class="legend-item">
+            <div class="swatch" style="background:var(--ready)"></div>
+            <div>80–100<br><strong>Ready / strength</strong></div>
+          </div>
+          <div class="legend-item">
+            <div class="swatch" style="background:var(--watch)"></div>
+            <div>70–79<br><strong>Watch / build</strong></div>
+          </div>
+          <div class="legend-item">
+            <div class="swatch" style="background:var(--gap)"></div>
+            <div>0–69<br><strong>Priority gap</strong></div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="right-column">
+      <article class="card composition-card">
+        <h2 class="card-title">Sector proficiency composition</h2>
+
+        <div class="stack" aria-label="Sector proficiency composition">
+          <div class="stack-no"></div>
+          <div class="stack-single"></div>
+          <div class="stack-multi"></div>
+        </div>
+
+        <div class="composition-legend">
+          <div class="composition-item">
+            <div class="swatch" style="background:var(--gap)"></div>
+            <div><strong>No proficiency</strong> — 5 | 41.7%</div>
+          </div>
+          <div class="composition-item">
+            <div class="swatch" style="background:var(--watch)"></div>
+            <div><strong>Single sector proficiency</strong> — 4 | 33.3%</div>
+          </div>
+          <div class="composition-item">
+            <div class="swatch" style="background:var(--ready)"></div>
+            <div><strong>Multi-sector proficiency</strong> — 3 | 25.0%</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card persona-card">
+        <h2 class="card-title">Persona fit by team need</h2>
+
+        <div class="persona-list">
+          <div class="persona-row">
+            <div>Hunter</div>
+            <div class="bar"><div class="fill watch" style="width:66.7%"></div></div>
+            <div class="persona-score">2/3</div>
+          </div>
+
+          <div class="persona-row">
+            <div>Farmer</div>
+            <div class="bar"><div class="fill ready" style="width:100%"></div></div>
+            <div class="persona-score">4/4</div>
+          </div>
+
+          <div class="persona-row">
+            <div>Sweeper</div>
+            <div class="bar"><div class="fill gap" style="width:50%"></div></div>
+            <div class="persona-score">1/2</div>
+          </div>
+
+          <div class="persona-row">
+            <div>Transactional banker</div>
+            <div class="bar"><div class="fill ready" style="width:100%"></div></div>
+            <div class="persona-score">1/1</div>
+          </div>
+
+          <div class="persona-row">
+            <div>Product specialist</div>
+            <div class="bar"><div class="fill ready" style="width:100%"></div></div>
+            <div class="persona-score">2/2</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card manager-card">
+        <h2 class="card-title">Manager action prompt</h2>
+        <ul class="manager-list">
+          <li>Prioritise bankers with credit and risk gaps for targeted development.</li>
+          <li>Create a foundational sector pathway for bankers with no sector proficiency.</li>
+          <li>Use multi-sector bankers as peer coaches and deal-forum faculty.</li>
+          <li>Pair strong Farmers with emerging Hunters for adjacency development.</li>
+          <li>Review readiness gaps during scheduled talent calibration discussions.</li>
+          <li>Track cohort progress against agreed capability and proficiency thresholds.</li>
+        </ul>
+      </article>
+
+    </section>
+
+  </main>
+
+  <footer class="brand-footer team-brand-footer" aria-label="Absa brand">
+    <div class="brand-lockup">
+      <span>Your story matters</span>
+      <img src="absalogo.png" alt="Absa" />
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
