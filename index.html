@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BB Talent Intelligence Dashboard</title>
+
+<style>
+  :root {
+    --hope: #95052a;
+    --passion: #dc0037;
+    --power: #b50232;
+    --enrich: #131010;
+    --grey-72: #4c4949;
+    --grey-60: #686666;
+    --grey-24: #c7c5c5;
+    --grey-08: #ece9e9;
+    --grey-04: #f8f6f6;
+    --serene: #ffffff;
+    --border: #e2dfdf;
+    --radius: 10px;
+    --shadow: 0 2px 8px rgba(19, 16, 16, 0.08);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--serene);
+    color: var(--enrich);
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  body {
+    min-height: 100vh;
+  }
+
+  .page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 48px;
+  }
+
+  .page-header {
+    margin-bottom: 48px;
+  }
+
+  h1 {
+    margin: 24px 0 8px;
+    font-size: 34px;
+    line-height: 1.08;
+    letter-spacing: -0.6px;
+    font-weight: 700;
+    color: var(--enrich);
+  }
+
+  .subtitle {
+    margin: 0;
+    color: var(--grey-60);
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  .intro-strip {
+    margin-bottom: 40px;
+    min-height: 48px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    background: var(--grey-04);
+    border-left: 4px solid var(--hope);
+    color: var(--hope);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+    width: 100%;
+    max-width: 1320px;
+  }
+
+  .dashboard-card {
+    min-height: 230px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--serene);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+
+  .dashboard-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--grey-24);
+    box-shadow: 0 6px 18px rgba(19, 16, 16, 0.10);
+  }
+
+  .dashboard-card:focus-visible {
+    outline: 3px solid rgba(43, 130, 218, 0.35);
+    outline-offset: 3px;
+  }
+
+  .card-label {
+    color: var(--grey-60);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .card-title {
+    margin: 24px 0 10px;
+    color: var(--hope);
+    font-size: 25px;
+    line-height: 1.15;
+    font-weight: 700;
+  }
+
+  .card-description {
+    margin: 0;
+    color: var(--grey-60);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .card-link {
+    margin-top: 32px;
+    color: var(--hope);
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .footer {
+    margin-top: auto;
+    padding-top: 56px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .brand-lockup {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--passion);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .brand-lockup img {
+    display: block;
+    height: 48px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  @media (max-width: 900px) {
+    .page {
+      padding: 32px 24px;
+    }
+
+    .cards {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+
+<body>
+  <div class="page">
+
+    <header class="page-header">
+      <h1>BB Talent Intelligence Dashboard</h1>
+      <p class="subtitle">
+        Talent intelligence views across individual, team and organisation-wide levels.
+      </p>
+    </header>
+
+    <div class="intro-strip">
+      Select a dashboard view
+    </div>
+
+    <main class="cards" aria-label="Dashboard navigation">
+
+      <a class="dashboard-card" href="individual.html">
+        <div>
+          <div class="card-label">Individual</div>
+          <h2 class="card-title">Individual View</h2>
+          <p class="card-description">
+            One banker view of skills, sector proficiency, success persona fit and recommended development actions.
+          </p>
+        </div>
+        <div class="card-link">OPEN INDIVIDUAL VIEW →</div>
+      </a>
+
+      <a class="dashboard-card" href="team.html">
+        <div>
+          <div class="card-label">Team</div>
+          <h2 class="card-title">Team View</h2>
+          <p class="card-description">
+            Manager view of team capability, portfolio coverage, persona alignment and development priorities.
+          </p>
+        </div>
+        <div class="card-link">OPEN TEAM VIEW →</div>
+      </a>
+
+      <a class="dashboard-card" href="organisation.html">
+        <div>
+          <div class="card-label">Organisation-wide</div>
+          <h2 class="card-title">Organisation-wide View</h2>
+          <p class="card-description">
+            Executive view of capability supply, sector readiness and workforce composition across Business Banking.
+          </p>
+        </div>
+        <div class="card-link">OPEN ORGANISATION VIEW →</div>
+      </a>
+
+    </main>
+
+    <footer class="footer" aria-label="Absa brand">
+      <div class="brand-lockup">
+        <span>Your story matters</span>
+        <img src="absalogo.png" alt="Absa" />
+      </div>
+    </footer>
+
+  </div>
+</body>
+</html>
