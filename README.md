@@ -1,4 +1,4 @@
-# BB Talent Intelligence Dashboard
+# BB Talent Intelligence Dashboard Prototype
 
 Prototype Talent Intelligence Dashboard for Business Banking.
 
