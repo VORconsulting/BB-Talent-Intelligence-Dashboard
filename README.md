@@ -18,4 +18,4 @@ All names, assessment results and population data used in the prototype are fict
 
 ## Data and confidentiality
 
-No real employee data, confidential assessment results, passwords, credentials or proprietary datasets should be stored in this public repository.
+No real employee data, confidential assessment results, passwords, credentials or proprietary datasets are stored in this repository.
